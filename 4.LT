@@ -1,0 +1,78 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+ifstream fin("input.dat");
+
+int n;
+int INF[100];
+int TATA[100];
+int DIST[100];
+
+void read(){
+    fin >> n;
+
+    for(int i = 1; i <= n; i++) fin >> INF[i];
+    for(int i = 1; i <= n; i++) fin >> TATA[i];
+    for(int i = 1; i <= n; i++) fin >> DIST[i];
+}
+
+int get_RightChild(int node){
+    for(int i = 1; i <= n; i++){
+        if(TATA[i] == node && DIST[i] == 1) return i;
+    }
+    return -1;
+}
+
+int get_LeftChild(int node){
+    for(int i = 1; i <= n; i++){
+        if(TATA[i] == node && DIST[i] == -1) return i;
+    }
+    return -1;
+}
+
+void print_RSD(int node){
+    cout << INF[node] << " ";
+
+    int left_child = get_LeftChild(node);
+    if(left_child != -1) print_RSD(left_child);
+
+    int right_child = get_RightChild(node);
+    if(right_child != -1) print_RSD(right_child);
+}
+
+void print_SRD(int node){
+    int left_child = get_LeftChild(node);
+    if(left_child != -1) print_SRD(left_child);
+
+    cout << INF[node] << " ";
+
+    int right_child = get_RightChild(node);
+    if(right_child != -1) print_SRD(right_child);
+}
+
+void print_SDR(int node){
+    int left_child = get_LeftChild(node);
+    if(left_child != -1) print_SDR(left_child);
+
+    int right_child = get_RightChild(node);
+    if(right_child != -1) print_SDR(right_child);
+
+    cout << INF[node] << " ";
+}
+
+int main()
+{
+    read();
+    cout << "RSD(1):";
+    print_RSD(1);
+    cout << endl;
+    cout << "SRD(1):";
+    print_SRD(1);
+    cout << endl;
+    cout << "SDR(1):";
+    print_SDR(1);
+    cout << endl;
+
+    return 0;
+}
